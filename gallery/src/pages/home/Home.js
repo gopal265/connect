@@ -12,9 +12,10 @@ import FriendList from '../../components/friendList/FriendList';
 const Home = () => {
 
     const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
     useEffect(()=>{
-     
-    })
+      dispatch(getPosts())
+    },[])
   return (
     < >
        <Navbar />

@@ -62,7 +62,7 @@ const UpdateProfile = () => {
             console.log("updateProfile-pending")
         }
         else{
-            setUserStatus(status.updateUser)
+            dispatch(setUserStatus())
             navigate('/home')
             
         }

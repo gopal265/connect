@@ -49,6 +49,18 @@ export const likePost = createAsyncThunk(
 
 )
 
+export const commentPost = createAsyncThunk(
+    "commentPost",
+    async (data) =>{
+        try {
+            const response = await api.commentPost(data.id,data.data)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
 export const deletePost = (id) => async  (dispatch) =>{
 
     try {

@@ -1,10 +1,17 @@
 import React,{useState} from 'react'
 import "./Navbar.css"
 import Avatar from '../avatar/Avatar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLogOut } from '../../../state'
 
 const Navbar = ({signUp,setSignUp}) => {
   const user = useSelector(state => state.auth.user)
+  const [showOptions,setShowOptions] = useState(false)
+  const dispatch = useDispatch()
+  const logOut = () =>{
+    console.log("logout")
+    dispatch(setLogOut())
+  }
 
   return (
     <div>
@@ -41,8 +48,9 @@ const Navbar = ({signUp,setSignUp}) => {
               <a className="nav-link "><i className="fa-solid fa-question"></i></a>
             </li>
             <li className="nav-item ">
-              <a className="nav-link" href="#"> <Avatar /> </a>
+              <a className="nav-link"  onClick={() =>setShowOptions(!showOptions)}> <Avatar userName={user.userName} picture={user.picture} /> </a>
             </li>
+            
           </ul>
           </>
             )
@@ -52,6 +60,10 @@ const Navbar = ({signUp,setSignUp}) => {
         </div>
         </div>
       </nav>
+      <div className={`options ${showOptions ? "active" : ''}`}>
+        <p>Profile</p>
+        <p  onClick={logOut}>LogOut</p>
+      </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
 import { registerUser,login } from "../actions/Auth";
-import { getPosts, likePost } from "../actions/Posts";
+import { commentPost, getPosts, likePost } from "../actions/Posts";
 import { addRemoveFriend, getUser, getUserFriends, updateUser } from "../actions/User";
 import { getUserPosts } from "../actions/Posts";
 
@@ -31,7 +31,11 @@ export const authSlice = createSlice({
             state.mode = state.mode === "light" ? "dark" : "light";
         },
         setUserStatus : (state) =>{
-            state = true
+            state.status.updateUser = true
+        },
+        setLogOut : (state) =>{
+            state.user = null
+            state.token  = null
         }
 
     },
@@ -104,9 +108,15 @@ export const authSlice = createSlice({
             state.error = action.payload
             state.loading = false
         })
+        .addCase(commentPost.fulfilled,(state,action)=>{
+            
+        })
+        .addCase(commentPost.rejected,(state,action)=>{
+            state.error = action.payload
+        })
 
     }
 })
 
-export const {setMode,setUserStatus} = authSlice.actions;
+export const {setMode,setUserStatus,setLogOut} = authSlice.actions;
 export default  authSlice.reducer;

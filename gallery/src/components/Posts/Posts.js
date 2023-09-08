@@ -10,7 +10,7 @@ const Posts = () => {
   console.log("post-render")
 
   useEffect(() =>{
-    dispatch(getPosts())
+    
     console.log("post-effect")
   },[])
   return (

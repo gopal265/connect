@@ -7,3 +7,18 @@
     align-items: center;
 
 }
+.options{
+    position: absolute;
+    top : 60px;
+    right: 55px;
+    background-color: white;
+    visibility: hidden;
+    z-index: 10;
+    
+}
+
+.active{
+    opacity: 1;
+    visibility: visible;
+    top: 60px;
+}

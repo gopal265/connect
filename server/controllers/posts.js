@@ -72,3 +72,20 @@ export const likePost = async (req, res) => {
     res.status(404).json(error);
   }
 };
+
+export const commentPost = async (req,res) =>{
+   try {
+    const {id} = req.params
+    const {userId,commentText} = req.body
+ 
+    const post = await Post.findById(id)
+    const user = await User.findById(userId)
+    post.comments.push({text:commentText,user:user})
+    await post.save()
+    
+    res.status(200).json(post)
+
+   } catch (error) {
+    res.status(500).json(error)
+   }
+}
