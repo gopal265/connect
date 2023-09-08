@@ -1,0 +1,5 @@
+1. create a folder named server 
+2. create a index.js file in it
+3. npm init -y : this will create an empty package.json
+4. we can use import rather than require in node 
+5. to enable this we need to write type : module in package.json

@@ -1,0 +1,9 @@
+.navbar-signup-btn{
+    position: absolute;
+    right : 40px;
+}
+.feature, .collapse{
+    display: flex;
+    align-items: center;
+
+}
