@@ -89,3 +89,15 @@ export const commentPost = async (req,res) =>{
     res.status(500).json(error)
    }
 }
+
+// Delete
+export const deletePost = async (req,res) =>{
+  try {
+    const {id} = req.params
+    await Post.findByIdAndRemove(id)
+    const posts = await Post.find()
+    res.status(200).json(posts)
+  } catch (error) {
+    res.status(500).json({error})
+  }
+}

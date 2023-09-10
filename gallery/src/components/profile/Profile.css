@@ -8,9 +8,10 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    border: 1px solid black;
+    border-radius: 12px;
     padding: 20px;
-    margin :20px auto
+    margin :20px auto;
+    background-color: white;
 
 }
 

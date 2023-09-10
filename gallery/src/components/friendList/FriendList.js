@@ -11,12 +11,12 @@ const FriendList = ({isProfile=false}) => {
   
   useEffect(() =>{
     dispatch(getUserFriends({id:currentUser._id,token:token}))
-  },[])
+  },[currentUser.friends])
     
 
    
   return (
-    <div>
+    <div className='friends-list  '>
       <h5>Friends</h5>
       { friends ? friends.map(friend =>(
 

@@ -11,3 +11,49 @@ html,body,#root,.app{
     height: 100%;
     font-family: "Nunito-Sans",Arial, Helvetica, sans-serif;
 }
+
+.center {
+    display:  flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.center-v {
+    display: flex;
+    align-items: center;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.icon-large{
+    font-size: 20px;
+}
+.icon-small{
+    font-size: 15px;
+}
+.icon-medium{
+    font-size: 17px;
+}
+
+.center-v-sb{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.home{
+    background-color: rgb(252, 240, 248);
+}
+
+.friends-list{
+    margin: 20px auto;
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* .container-fluid{
+    padding
+} */

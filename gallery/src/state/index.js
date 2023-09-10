@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
 import { registerUser,login } from "../actions/Auth";
-import { commentPost, getPosts, likePost } from "../actions/Posts";
+import { commentPost, deletePost, getPosts, likePost } from "../actions/Posts";
 import { addRemoveFriend, getUser, getUserFriends, updateUser } from "../actions/User";
 import { getUserPosts } from "../actions/Posts";
 
@@ -18,6 +18,7 @@ const initialState = {
     profileUser: null,
     status :{
         updateUser : true,
+        addRemoveFriends: true
 
     }
    
@@ -36,6 +37,9 @@ export const authSlice = createSlice({
         setLogOut : (state) =>{
             state.user = null
             state.token  = null
+        },
+        setAddRemoveFriends : (state)=>{
+            state.status.addRemoveFriends = true
         }
 
     },
@@ -73,8 +77,12 @@ export const authSlice = createSlice({
         .addCase(getUserFriends.rejected,(state,action) => {
             state.error = action.payload
         })
+        .addCase(addRemoveFriend.pending,(state) =>{
+            state.status.addRemoveFriends = true
+        })
         .addCase(addRemoveFriend.fulfilled,(state,action)=>{
-            state.friends = action.payload
+            state.friends = action.payload.friendsList
+            state.user = action.payload.user
         })
         .addCase(addRemoveFriend.rejected,(state,action) =>{
             state.error = action.payload
@@ -114,9 +122,15 @@ export const authSlice = createSlice({
         .addCase(commentPost.rejected,(state,action)=>{
             state.error = action.payload
         })
+        .addCase(deletePost.fulfilled,(state,action) =>{
+            state.posts = action.payload
+        })
+        .addCase(deletePost.rejected,(state,action) =>{
+            state.error = action.payload
+        })
 
     }
 })
 
-export const {setMode,setUserStatus,setLogOut} = authSlice.actions;
+export const {setMode,setUserStatus,setLogOut,setAddRemoveFriends} = authSlice.actions;
 export default  authSlice.reducer;

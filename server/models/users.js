@@ -48,8 +48,14 @@ const userSchema = mongoose.Schema({
     },
     location : String,
     occupation : String,
-    viewedProfile:Number,
-    impressions:Number
+    viewedProfile:{
+        type:Number,
+        default : 0
+    },
+    impressions:{
+        type : Number,
+        default : 0
+    }
 },{timestamps:true})
 
 const User = mongoose.model("User",userSchema)

@@ -14,8 +14,8 @@ const Navbar = ({signUp,setSignUp}) => {
   }
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-light ">
+    <div className='navbar-container'>
+      <nav className="navbar navbar-expand-sm navbar-light ">
         <div className='container'>
         <a className="navbar-brand" href="#">Navbar</a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

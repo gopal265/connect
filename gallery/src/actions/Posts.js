@@ -61,12 +61,14 @@ export const commentPost = createAsyncThunk(
     }
 )
 
-export const deletePost = (id) => async  (dispatch) =>{
-
-    try {
-        await api.deletePost(id)
-        dispatch({type:"Delete",payload:id})
-    } catch (error) {
-        console.log(error)
+export const deletePost = createAsyncThunk(
+    'deletePost',
+    async (id) =>{
+        try {
+            const response = await api.deletePost(id)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
     }
-}
+)

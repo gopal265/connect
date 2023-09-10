@@ -1,3 +1,6 @@
+.navbar-container{
+    background-color: white;
+}
 .navbar-signup-btn{
     position: absolute;
     right : 40px;

@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const token = useSelector((state) => state.auth.token);
   const profileUser = useSelector(state=> state.auth.profileUser)
+  const posts = useSelector((state)=> state.posts)
   const dispatch = useDispatch()
 
   useEffect(()=>{
@@ -19,36 +20,37 @@ const ProfilePage = () => {
   dispatch(getUserPosts(userId))
   dispatch(getUserFriends({id:userId,token:token}))
    
-  },[])
+  },[posts])
   return (
-   <>
+   <div className='home'>
      {!profileUser ? (
       <>
       </>
      ) :(
       < >
       <Navbar />
-      <div className='container  '>
+      <div className='container-fluid pl-3 pr-3  '>
         <div className='row'>
-          <div className='col-4 home-item'>
+          
+          <div className='col-md-4 col-sm-4 '>
           <Profile isProfile={true} />
+          <FriendList isProfile={true}/>
           </div>
-          <div className='col-4 home-item'>
+          
+          <div className='col-md-4 col-sm-6'>
             <Posts isProfile={true} />
           </div>
          
-            <FriendList isProfile={true}/>
-          </div>
+        </div>
           
         </div>
-        {profileUser.userName}
         
       
              
     </>
      )}
       
-  </>
+  </div>
   )
 }
 

@@ -56,7 +56,7 @@ export const addRemoveFriend = async (req,res) =>{
             return ({ _id,firstName,lastName,loaction,occupation,picture})
         })
 
-        res.status(200).json(formattedFriends)
+        res.status(200).json({friendsList:formattedFriends,user:user})
         
     } catch (error) {
         res.status(404).json({message:error.message})

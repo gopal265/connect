@@ -5,7 +5,7 @@ import Avatar from '../common/avatar/Avatar'
 import "./Profile.css"
 
 const Profile = ({isProfile=false}) => {
-
+    console.log("profile")
     const { user } = useSelector(state => state.auth)
     const profileUser  = useSelector(state => state.auth.profileUser)
     const [currentUser,setCurrenUser] = useState(user)
@@ -38,8 +38,10 @@ const Profile = ({isProfile=false}) => {
                     </div>
                 </div>
                 {
-                    isProfile ?(
-                            <></>
+                    isProfile && user._id !== profileUser._id ?(
+                            <div>
+                            <div><i class="fa-solid fa-thumbs-up"></i></div>
+                            </div>
                     ) : (
                         <div onClick={()=> navigate('/updateProfile')} >
                         <i class="fa-regular fa-pen-to-square"></i>
@@ -69,7 +71,11 @@ const Profile = ({isProfile=false}) => {
             }
 
             <hr />
-            {currentUser.socialProfile ? (
+            <div>
+                <div>Profile Views :  {currentUser.viewedProfile}</div>
+                <div>Profile Likes :  {currentUser.impressions}</div>
+            </div>
+            {currentUser.socialProfile.length !==0 ? (
 
                 <div>
                     <h6>Social Meida Profiles</h6>

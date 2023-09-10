@@ -12,5 +12,5 @@ export const likePost = (id,userId) => axios.patch(`${url}/${id}`,{userId:userId
 
 export const commentPost = (id,data) => axios.patch(`${url}/${id}/comments`,data)
 
-export const deletePost = (id) => axios.patch(`${url}/${id}`)
+export const deletePost = (id) => axios.delete(`${url}/${id}`)
 
