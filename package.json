@@ -6,7 +6,7 @@
   "scripts": {
     "install-server": "cd server && npm install",
     "start-server": "cd server && node index.js",
-    "install-client": "cd galler && npm install",
+    "install-client": "cd gallery && npm install",
     "build-client": "cd gallery && npm run build",
     "start-client": "cd gallery && npm run start"
   },
