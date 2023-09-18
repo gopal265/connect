@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const url ="http://localhost:5000/auth";
+const url ="https://connect-01yh.onrender.com/auth";
 
 export const register = (newUser) =>axios.post(`${url}/register`,newUser)
 

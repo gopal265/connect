@@ -1,6 +1,6 @@
 import axios from "axios";
 
- const url ="http://localhost:5000/users";
+ const url ="https://connect-01yh.onrender.com/users";
 
 
 export const getUser =(id,config) => axios.get(`${url}/${id}`,config)
