@@ -2,6 +2,7 @@
     padding: 10px 30px;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
  .update-profile-container{
    height:max-content;
