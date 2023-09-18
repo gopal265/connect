@@ -9,11 +9,14 @@ import userRoutes from "./routes/users.js"
 
 dotenv.config()
 const app = express();
-
+const corsOptions = {
+    origin: "https://connectui.onrender.com"
+}
 
 app.use(bodyParser.json({limit: "20mb",extended:true}));
 app.use(bodyParser.urlencoded({limit: "20mb",extended:true}));
-app.use(cors());
+
+app.use(cors(corsOptions));
 
 
 app.use('/posts',postRoutes)
