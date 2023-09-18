@@ -24,9 +24,9 @@ const connection_Url = process.env.CONNECTION_URL
 
 mongoose.connect(connection_Url)
 .then(() =>
-    app.listen(5000, () =>{
+    app.listen(port, () =>{
     console.log(`Server started at port : ${port}`)
-    console.log("URL: http://localhost:5000");}))
+    }))
 .catch((err) => console.log(err))
 
 
