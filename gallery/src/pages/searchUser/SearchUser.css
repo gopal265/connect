@@ -1,0 +1,10 @@
+.center-h{
+    display: flex;
+    justify-content: center;
+}
+.text-align{
+    text-align: center;
+    background-image: linear-gradient(to right,rgb(223, 211, 216),rgb(154, 154, 185),rgb(130, 130, 161));
+    color: white;
+    font-size: 20px;
+}

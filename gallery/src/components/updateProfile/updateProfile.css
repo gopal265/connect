@@ -1,0 +1,29 @@
+.update-profile-wrapper{
+    padding: 10px 30px;
+    align-items: center;
+}
+ .update-profile-container{
+   height:max-content;
+   width: 400px;
+   padding: 30px;
+   background-image: linear-gradient(rgb(240, 232, 237),rgb(201, 178, 183));
+   
+} 
+
+@media screen and (max-width : 500px) {
+    .update-profile-container{
+        width: 100%;
+    }
+}
+.update-profile-form input{
+
+    font-size: 16px;
+    
+    border: none;
+    background-color:white;
+    border-radius: 10px;
+
+}
+.update-profile-wrapper h3{
+    text-align: center;
+}

@@ -13,7 +13,8 @@
     flex-direction: column;
     padding-top : 40px ;
     padding-bottom: 30px;
-    border-radius: 20px;
+    background-image: linear-gradient(rgb(240, 232, 237),rgb(201, 178, 183));
+
     
 }
 
@@ -36,4 +37,20 @@
 
 .no-account span{
    color : rgb(35, 135, 228)
+}
+
+.error-block{
+    position: absolute;
+    top:70px;
+    display: none;
+}
+.error-active{
+    display:flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-hide{
+    position:absolute;
+    right:20px;
 }

@@ -1,8 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit"
-import { registerUser,login } from "../actions/Auth";
-import { commentPost, deletePost, getPosts, likePost } from "../actions/Posts";
-import { addRemoveFriend, getUser, getUserFriends, updateUser } from "../actions/User";
-import { getUserPosts } from "../actions/Posts";
+import { registerUser,login, forgetPassword, confirmOtp, resetPassword } from "../actions/Auth";
+
+import { addRemoveFriend, getUser, getUserFriends, likedProfile, searchUser, updateUser, viewedProfile } from "../actions/User";
+
+
+
 
 
 const initialState = {
@@ -13,12 +15,14 @@ const initialState = {
     token: null,
     error:null,
     success : false,
-    posts : [],
+    message:'',
     friends : [],
     profileUser: null,
+    searchUser:null,
     status :{
         updateUser : true,
-        addRemoveFriends: true
+        searchUser : true,
+        profileUser:true
 
     }
    
@@ -38,8 +42,11 @@ export const authSlice = createSlice({
             state.user = null
             state.token  = null
         },
-        setAddRemoveFriends : (state)=>{
-            state.status.addRemoveFriends = true
+        setSearchUser : (state) =>{
+            state.status.searchUser = true
+        },
+        setProfilUser: (state) =>{
+            state.status.profileUser =true
         }
 
     },
@@ -48,62 +55,37 @@ export const authSlice = createSlice({
         .addCase(registerUser.fulfilled,(state,action) =>{
             state.loading = false
             state.success = true
+            state.error = null
 
         })
         .addCase(registerUser.rejected,(state,action)=>{
             state.loading = false
             state.error = action.payload
         })
-        .addCase(login.fulfilled,(state,action) =>{
-            state.loading = false
-            state.user =  action.payload.user
-            state.token = action.payload.token
-           
+        .addCase(login.pending,(state,action)=>{
+            state.loading = true
         })
         .addCase(login.rejected,(state,action) =>{
             state.loading = false
             state.error = action.payload
+           
         })
-        .addCase(getPosts.fulfilled,(state,action) =>{
-            state.posts = action.payload
-
+        .addCase(login.fulfilled,(state,action) =>{
+            state.loading = false
+            state.user =  action.payload.user
+            state.token = action.payload.token
+            state.error = null
+           
         })
-        .addCase(getPosts.rejected,(state,action) =>{
-            state.error = action.payload
-        })
-        .addCase(getUserFriends.fulfilled,(state,action) =>{
-            state.friends = action.payload
-        })
-        .addCase(getUserFriends.rejected,(state,action) => {
-            state.error = action.payload
-        })
-        .addCase(addRemoveFriend.pending,(state) =>{
-            state.status.addRemoveFriends = true
-        })
-        .addCase(addRemoveFriend.fulfilled,(state,action)=>{
-            state.friends = action.payload.friendsList
-            state.user = action.payload.user
-        })
-        .addCase(addRemoveFriend.rejected,(state,action) =>{
-            state.error = action.payload
+        .addCase(getUser.pending,(state,action)=>{
+            state.status.profileUser = true
         })
         .addCase(getUser.fulfilled,(state,action) =>{
             state.profileUser = action.payload
+            state.status.profileUser = false
         })
         .addCase(getUser.rejected,(state,action) =>{
             state.error =  action.payload
-        })
-        .addCase(getUserPosts.fulfilled,(state,action) =>{
-            state.posts = action.payload
-        })
-        .addCase(getUserPosts.rejected,(state,action) =>{
-            state.error = action.payload
-        })
-        .addCase(likePost.fulfilled,(state,action) =>{
-            state.posts = state.posts.map(post => post._id ===  action.payload._id ? action.payload : post)
-        })
-        .addCase(likePost.rejected,(state,action) =>{
-            state.error = action.payload
         })
         .addCase(updateUser.pending,(state,action) =>{
             state.status.updateUser = true
@@ -116,21 +98,42 @@ export const authSlice = createSlice({
             state.error = action.payload
             state.loading = false
         })
-        .addCase(commentPost.fulfilled,(state,action)=>{
+        .addCase(searchUser.fulfilled,(state,action)=>{
+            state.searchUser = action.payload
+            state.status.searchUser = false
+        })
+        .addCase(searchUser.rejected,(state,action) =>{
+            state.error = action.payload
+        })
+        .addCase(viewedProfile.fulfilled,(state,action)=>{
+            state.user = action.payload
+            state.error = null
             
         })
-        .addCase(commentPost.rejected,(state,action)=>{
+        .addCase(viewedProfile.rejected,(state,action)=>{
             state.error = action.payload
         })
-        .addCase(deletePost.fulfilled,(state,action) =>{
-            state.posts = action.payload
+        .addCase(likedProfile.fulfilled,(state,action) =>{
+            state.profileUser = action.payload
         })
-        .addCase(deletePost.rejected,(state,action) =>{
+        .addCase(likedProfile.rejected,(state,action) =>{
             state.error = action.payload
+        })
+        .addCase(forgetPassword.fulfilled,(state,action) =>{
+            state.message = action.payload.message
+        })
+        .addCase(forgetPassword.rejected,(state,action) =>{
+            state.error = action.payload
+        })
+        .addCase(confirmOtp.fulfilled,(state,action) => {
+            state.message = action.payload.message
+        })
+        .addCase(resetPassword.fulfilled,(state,action) =>{
+            state.message = action.payload.message
         })
 
     }
 })
 
-export const {setMode,setUserStatus,setLogOut,setAddRemoveFriends} = authSlice.actions;
+export const {setMode,setUserStatus,setLogOut,setSearchUser,setProfilUser} = authSlice.actions;
 export default  authSlice.reducer;

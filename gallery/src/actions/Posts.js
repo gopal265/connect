@@ -15,14 +15,17 @@ export const getPosts = createAsyncThunk(
     }
 )
 
-export const createPost = (newPost) => async(dispatch) =>{
-    try {
-        const {data} = await api.createPost(newPost);
-        dispatch({type:"Create",payload:data})
-    } catch (error) {
-        console.log(error.message)
+export const createPost = createAsyncThunk(
+    'createPost',
+    async (newPost) =>{
+        try {
+            const response = await api.createPost(newPost)
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
     }
-}
+)
 
 export const getUserPosts = createAsyncThunk(
     "getUserPosts",

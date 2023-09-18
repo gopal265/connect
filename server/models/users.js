@@ -49,12 +49,12 @@ const userSchema = mongoose.Schema({
     location : String,
     occupation : String,
     viewedProfile:{
-        type:Number,
-        default : 0
+        type:Array,
+        default : []
     },
     impressions:{
-        type : Number,
-        default : 0
+        type : Array,
+        default : []
     }
 },{timestamps:true})
 

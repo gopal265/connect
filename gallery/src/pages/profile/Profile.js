@@ -5,22 +5,22 @@ import Posts from '../../components/Posts/Posts'
 import Navbar from '../../components/common/Navbar/Navbar'
 import FriendList from '../../components/friendList/FriendList'
 import { useDispatch,useSelector} from 'react-redux'
-import { getUser, getUserFriends } from '../../actions/User'
+import {  getUserFriends } from '../../actions/User'
 import { getUserPosts } from '../../actions/Posts'
+
 const ProfilePage = () => {
 
   const { userId } = useParams();
   const token = useSelector((state) => state.auth.token);
   const profileUser = useSelector(state=> state.auth.profileUser)
-  const posts = useSelector((state)=> state.posts)
   const dispatch = useDispatch()
 
   useEffect(()=>{
-  dispatch(getUser({id:userId,token:token}))
+
   dispatch(getUserPosts(userId))
   dispatch(getUserFriends({id:userId,token:token}))
-   
-  },[posts])
+  
+  },[profileUser])
   return (
    <div className='home'>
      {!profileUser ? (

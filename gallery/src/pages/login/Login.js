@@ -7,7 +7,7 @@ import LoginForm from '../../components/login/loginForm/LoginForm'
 const Login = () => {
   const [signUp, setSignUp] = useState(false)
   return (
-    <div className='login-page'>
+    <div className='login-page '>
       <Navbar signUp={signUp} setSignUp={setSignUp}  />
       <LoginForm signUp={signUp} setSignUp={setSignUp} />
 

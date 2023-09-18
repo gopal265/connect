@@ -1,10 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import dotenv from "dotenv"
 import mongoose from "mongoose";
 import postRoutes from "./routes/posts.js"
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/users.js"
+
+dotenv.config()
 const app = express();
 
 
@@ -17,7 +20,7 @@ app.use('/posts',postRoutes)
 app.use('/auth',authRoutes)
 app.use("/users",userRoutes)
 let port = process.env.PORT || 5000;
-const connection_Url = "mongodb+srv://gopalreddy:redyeye@firstcluster.byqzmdi.mongodb.net/?retryWrites=true&w=majority"
+const connection_Url = process.env.CONNECTION_URL
 
 mongoose.connect(connection_Url)
 .then(() =>

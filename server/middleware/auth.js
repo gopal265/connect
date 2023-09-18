@@ -1,4 +1,8 @@
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
+import OTP from "../models/otp.js";
+
+dotenv.config();
 
 export const verifyToken = async (req,res,next) =>{
     try {
@@ -14,13 +18,13 @@ export const verifyToken = async (req,res,next) =>{
 
         }
      
-        const verified = jwt.verify(token,"dontotrytosee")
+        const verified = jwt.verify(token,process.env.JWT_SECRET)
 
         req.user = verified
-
         next();
 
     } catch (error) {
         res.status(500).json({message:error.message})
     }
 }
+

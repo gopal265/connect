@@ -12,12 +12,19 @@ html,body,#root,.app{
     font-family: "Nunito-Sans",Arial, Helvetica, sans-serif;
 }
 
-.center {
-    display:  flex;
-    align-items: center;
-    justify-content: center;
+.full-height{
+    height: 100vh
+};
 
+.center-h{
+    display: flex;
+    justify-content: center;
 }
+.center-c{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   }
 .center-v {
     display: flex;
     align-items: center;
@@ -45,6 +52,8 @@ html,body,#root,.app{
 
 .home{
     background-color: rgb(252, 240, 248);
+   
+
 }
 
 .friends-list{

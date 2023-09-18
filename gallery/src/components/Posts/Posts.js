@@ -5,13 +5,9 @@ import { useDispatch } from 'react-redux'
 
 
 const Posts = () => {
-  const posts = useSelector((state) => state.auth.posts)
-  const dispatch = useDispatch()
-  console.log("post-render")
+  const posts = useSelector((state) => state.posts.posts)
 
-  useEffect(() =>{
-  
-  },[])
+  console.log("post-render")
   return (
     <>
       <div className='container-fluid posts-wrapper'>

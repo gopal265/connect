@@ -5,38 +5,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import {  commentPost, deletePost, likePost } from '../../../actions/Posts'
 import Avatar from '../../common/avatar/Avatar'
 import { useNavigate } from 'react-router-dom'
-import { addRemoveFriend, getUserFriends } from '../../../actions/User'
-import { setAddRemoveFriends } from '../../../state'
 import Comment from '../../comments/comment'
-
+import AddRemoveFriend from '../../AddRemoveFriend/AddRemoveFriend'
+import { getUser } from '../../../actions/User'
 const Post = ({ post }) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [showComments,setShowComments] = useState(false)
   const [commentText,setCommentText] = useState('')
+  const { user: currentUser } = useSelector(state => state.auth)  
   const token = useSelector(state => state.auth.token)
-  const { user: currentUser } = useSelector(state => state.auth)
-  const addRemoveFriends = useSelector(state => state.auth.status.addRemoveFriends)
-  console.log(currentUser)
-  const friends = useSelector(state => state.auth.user.friends)
-
-  const [isFriend, setIsFriend] = useState(null)
-
-  console.log(currentUser, friends)
-  const handleClick = () => {
-    dispatch(addRemoveFriend({ id: currentUser._id, friendId: post.userId, token: token }))
-        if(addRemoveFriends){
-            console.log("AddRemove is pending")
-        }
-        else{
-            setIsFriend(!isFriend)
-            dispatch(setAddRemoveFriends())
-        }
-   
-
-
-  }
+  console.log(post)
+ 
+ const navigateTOProfile = () =>{
+  
+    dispatch(getUser({id:post.userId,token:token}))
+      navigate(`/profile/${post.userId}`)
+  
+ }
   const handleLike = () => {
     dispatch(likePost({ id: post._id, userId: currentUser._id }))
 
@@ -47,44 +34,24 @@ const Post = ({ post }) => {
   const addComment = () =>{
 
        dispatch(commentPost({id :post._id,data : {userId:currentUser._id,commentText:commentText}}))
+       setCommentText('')
   }
-  useEffect(() => {
-
-    if (friends.includes(post.userId)) {
-      setIsFriend(true)
-    }
-    else {
-      setIsFriend(false)
-    }
-  }, [friends])
 
   return (
 
     <div className='col-12 card-wrapper'>
       <div className="card">
         <div className='post-head'>
-          <div className='profile-avatar' onClick={() => navigate(`/profile/${post.userId}`)}>
+          <div className='profile-avatar' onClick={navigateTOProfile}>
             <Avatar userName={post.userName} image={post.picture} />
             <div className='profile-avatar-content'>
-              <h6 className='profile-avatar-name'>{post.firstName}</h6>
+              <h6 className='profile-avatar-name'>{post.userName}</h6>
               <p className="time-indicator">{moment(post.createdAt).fromNow()}</p>
             </div>
           </div>
           {
             currentUser._id !== post.userId ? (
-              <div onClick={handleClick} className='icon'>
-                {
-                  (isFriend) ? (
-                    <div>
-                      <span ><i class="fa-solid fa-user-minus"></i></span>
-                    </div>
-                  ) : (
-                    <div>
-                      <span ><i class="fa-solid fa-user-plus"></i></span>
-                    </div>
-                  )
-                }
-              </div>
+             <AddRemoveFriend  postUserId={post.userId} />
             ) : (
               <></>
             )
@@ -97,7 +64,7 @@ const Post = ({ post }) => {
          
           <div className='post-buttons'>
             <div className='post-buttons'>
-              <p className="icon-medium mr-3" onClick={handleLike}><i class="fa-regular fa-thumbs-up "></i> {Object.keys(post.likes).length}</p>
+              <p className={`icon-medium mr-3 ${post.likes[currentUser._id] ? "blue" : " "}`} onClick={handleLike}><i class={`fa-regular fa-thumbs-up `}></i> {Object.keys(post.likes).length}</p>
               <p onClick={toggleComments} className='icon-medium'><i class="fa-regular fa-message"></i> {post.comments.length}</p>
             </div>
             {
@@ -140,4 +107,4 @@ const Post = ({ post }) => {
   )
 }
 
-export default Post
+export default React.memo(Post)

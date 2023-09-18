@@ -15,4 +15,4 @@ const Avatar = ({userName="",picture=""}) => {
   )
 }
 
-export default Avatar
+export default React.memo(Avatar)
