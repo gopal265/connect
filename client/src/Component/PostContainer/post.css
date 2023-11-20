@@ -1,0 +1,62 @@
+.post-outer-container{
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 25px 15px;
+    position: relative;
+}
+.post-head{
+    display: flex;
+    align-items: center;
+}
+.post-user{
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0px;
+}
+.share-option{
+    position: absolute;
+    right: 30px;
+}
+
+.PostImage{
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-left: 10px;
+}
+.PostImages{
+          width: 500px;
+          height: 450px;
+          object-fit: cover;
+          border-radius: 10px;
+}
+
+.iconsforPost{
+          width: 20px;
+          
+}
+
+.moreicons{
+          width: 20px;
+          position: absolute;
+          right: 15px;
+}
+
+.commentinput{
+          width: 24pc;
+          margin-left: 10px;
+          border: none;
+
+}
+.addCommentbtn{
+          padding: 9px;
+          border: none;
+          background-color: black;
+          color: white;
+          border-radius: 6px;
+          margin-left: 39px;
+          cursor: pointer;
+          padding-left: 40px;
+          padding-right: 40px;
+}

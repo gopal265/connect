@@ -1,0 +1,43 @@
+.outer-login-container{
+          background-color: #f0f2f5;
+          height: 100vh;
+}
+
+.login-form-container{
+    width: 400px;
+    max-width: 100%;
+    padding: 20px 15px;
+}
+
+.logo-text{
+          font-size: 40px;
+          text-align: start;
+          margin-top: 0px;
+}
+.intro-text{
+          font-size: 20px;
+          text-align: start;
+}
+
+.form-head{
+          font-size: 20px;
+          text-align: center;
+          font-weight: 600;
+          padding: 10px 0px;
+}
+
+.input-text{
+          display: flex;
+          padding: 10px;
+          border: none;
+          margin-bottom: 20px;
+          border-radius: 10px;
+}
+
+.login-button{
+    color: white;
+    font-size: 22px
+}
+.logo-part{
+          color: rgb(117, 160, 167);
+}

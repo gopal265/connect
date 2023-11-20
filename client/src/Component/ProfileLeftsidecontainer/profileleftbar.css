@@ -1,0 +1,41 @@
+.profile-head{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top : 75px;
+
+}
+
+.profile-container{
+    position: relative;
+    background-color: white;
+    border-radius: 15px;
+}
+.profile-midpart{
+    font-size: 14px;
+    font-weight: 300;
+    padding: 0px 20px;
+}
+
+.Profilepageimage{
+          width: 60px;
+          border-radius: 50%;
+          height: 60px;
+          object-fit: cover;
+          margin-left: 10px;
+
+}
+.ProfilepageCover{
+          height: 100px;
+          object-fit: cover;
+
+
+}
+
+.friendimage{
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 10px;
+}
+

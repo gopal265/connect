@@ -1,0 +1,54 @@
+.navbar-container{
+          display: flex;
+          width: 100%;
+          height: max-content;
+          padding: 0px 20px;
+          background-color: white;
+          position: relative;
+}
+.searchInputContainer{
+          display: flex;
+          align-items: center;
+          background-color: rgb(224, 228, 232);
+          border-radius: 10px;
+}
+.IconsContainer{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+}
+@media only screen and (min-width: 768px) {
+    .IconsContainer{
+        position: absolute;
+        right: 20px;
+    }
+  }
+.LogoContainer{
+          flex: 0.2;
+}
+
+.Icons{
+          width: 20px;
+          height: 20px;
+          margin-left: 20px;
+}
+.searchIcon{
+          width: 20px;
+          height: 20px;
+}
+
+.ProfileImage{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          margin-left: 20px;
+}
+
+.search-input{
+          width: 20rem;
+          border: none;
+          outline: none;
+          padding: 4px;
+          border-radius: 10px;
+          background-color: rgb(224, 228, 232)
+}

@@ -1,0 +1,57 @@
+const nodemailer = require("nodemailer");
+
+const sendEmail = async (res,email,otp,resetUrl,type='') => {
+        try{
+            console.log(email,otp)
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                port:465,
+                secure:true,
+                secureConnection:false,
+    
+                auth: {
+                    user: process.env.USER,
+                    pass: process.env.PASS,
+                },
+                tls :{
+                    rejectUnauthorized:true
+                }
+            });
+    
+            if(type =="otp"){
+                await transporter.sendMail({
+                    from: process.env.USER,
+                    to: email,
+                    subject: "Account Verification",
+                    html:`
+                    <p><img src="https://pixel77.com/wp-content/uploads/2014/11/20-Creative-Chat-Logo-Designs-19.png" alt="Logo" /></p>
+                    <p>Your OTP for account verification is: ${otp}</p> 
+                    `
+                    
+                });
+                return ;
+            }
+            if(type="reset"){
+                await transporter.sendMail({
+                    from: process.env.USER,
+                    to: email,
+                    subject: "Rest Password",
+                    html:`
+                    <p><img src="https://pixel77.com/wp-content/uploads/2014/11/20-Creative-Chat-Logo-Designs-19.png" alt="Logo" /></p>
+                    <p>Please click this link to reset your password ${resetUrl}</p> 
+                    `    
+                });
+                return ;
+            }
+        }
+        catch(error){
+            
+            return res.status(500).json({
+                status:"error",
+                message:"Server not responding"
+            })
+        }
+       
+    
+};
+module.exports = sendEmail;
