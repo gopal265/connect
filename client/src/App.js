@@ -8,7 +8,8 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate
+  Navigate,
+  useLocation
 } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import Resetpassword from './Pages/Resetpassword/Resetpassword';
@@ -21,10 +22,14 @@ import Navbar from './Component/Navbar/Navbar';
 
 function App() {
   const {user}= useSelector((state)=>state.user);
+  const location = useLocation();
+  const path = location.pathname
   return (
     <div className="App">
     <BrowserRouter>
-    <Navbar />
+    {
+      path.includes("login") || path.includes("signup") || path.includes("verify") ?  (<></>) : <Navbar />
+    }
     <Routes>
         <Route path="/" element={ user?.verifed === true ? <Home/> : <Navigate to={"/login"} replace={true}/>}></Route>
         <Route path="/Profile/:id" element={<Profile />}></Route>
