@@ -3,9 +3,11 @@ import ProfileLeftbar from '../../Component/ProfileLeftsidecontainer/ProfileLeft
 import ProfileMainPost from '../../Component/ProfileMainPostContainer/ProfileMainPost'
 import ProfileRightbar from '../../Component/ProfileRightsideContainer/ProfileRightbar'
 import "./profile.css"
+import Navbar from '../../Component/Navbar/Navbar'
 export default function Profile() {
   return (
     <div className='ProfileContainer'>
+      <Navbar />
       <div className='container-fluid px-4'>
         <div className='row'>
             <div className='col-lg-3 col-xl-3 px-0 d-none d-lg-block'>

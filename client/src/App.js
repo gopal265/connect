@@ -22,14 +22,9 @@ import Navbar from './Component/Navbar/Navbar';
 
 function App() {
   const {user}= useSelector((state)=>state.user);
-  const location = useLocation();
-  const path = location.pathname
   return (
     <div className="App">
     <BrowserRouter>
-    {
-      path.includes("login") || path.includes("signup") || path.includes("verify") ?  (<></>) : <Navbar />
-    }
     <Routes>
         <Route path="/" element={ user?.verifed === true ? <Home/> : <Navigate to={"/login"} replace={true}/>}></Route>
         <Route path="/Profile/:id" element={<Profile />}></Route>
@@ -38,9 +33,9 @@ function App() {
         <Route path="/verify/email" element={user?.Status === 'Pending' ? <Verifyemail/> : user?.verifed === true ? <Navigate to={"/"} replace={true}/> : <Login/>}></Route>
         <Route path="/forgot/password" element={<Forgotpassword/>}></Route>
         <Route path="/reset/password" element={<Resetpassword/>}></Route>
-        <Route path='/notification' element={<Notification />} />
-        <Route path='/explore' element={<Explore/>} />
-        <Route path='/profileinfo/:id' element={<ProfileLeftbar />} />
+        <Route path='/notification' element={<><Navbar /><Notification /></>} />
+        <Route path='/explore' element={<><Navbar /><Explore/></>} />
+        <Route path='/profileinfo/:id' element={<><Navbar /><ProfileLeftbar /></>} />
          
     </Routes>
   </BrowserRouter>

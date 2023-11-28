@@ -8,6 +8,7 @@ import "./home.css"
 export default function Home() {
   return (
     <div className='home full-width'>
+      <Navbar />
           <div className="container-fluid px-lg-5">
             <div className='row'>
               <div className='col-lg-3 d-none d-lg-block'>
