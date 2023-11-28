@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 export default function Signup() {
   const dispatch = useDispatch();
-  const {isFetching  , error} = useSelector((state)=>state.user);
   const user = useSelector((state)=>state.user);
   const [email , setEmail] = useState('');
   const [phonenumber , setphonenumber] = useState('');

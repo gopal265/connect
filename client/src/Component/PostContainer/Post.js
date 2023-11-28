@@ -10,23 +10,20 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 export default function Post({post}) {
-  const userDetails = useSelector((state)=>state.user);
-  let users = userDetails?.user
-  const [user , setuser] = useState([]);
+  const {user,token} = useSelector((state)=>state.user);
+  const [postUser , setPostUser] = useState([]);
   useEffect(() => {
     const getuser = async()=>{
       try {
-        const res  = await axios.get(`http://localhost:5000/api/user/post/user/details/${post.user}`)
-        setuser(res.data);
+        const res  = await axios.get(`https://connect-01yh.onrender.com/api/user/post/user/details/${post.user}`)
+        setPostUser(res.data);
       } catch (error) {
         console.log("Some error occured")
       }
     }
     getuser();
   }, [])
-  const userId = users.other._id;
-  const accessToken = users.accessToken;
-  const [Like, setLike] = useState([post.like.includes(userId) ? anotherlikeicon : LikeIcon]);
+  const [Like, setLike] = useState([post.like.includes(user._id) ? anotherlikeicon : LikeIcon]);
   const [count, setCount] = useState(post.like.length);
   const [Comments, setComments] = useState(post.comments);
   const [commentwriting, setcommentwriting] = useState('');
@@ -35,11 +32,11 @@ export default function Post({post}) {
   
   const handleLike = async() => {
     if (Like == LikeIcon) {
-      await fetch(`http://localhost:5000/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:accessToken}})
+      await fetch(`https://connect-01yh.onrender.com/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token}})
       setLike(anotherlikeicon);
       setCount(count + 1);
     } else {
-      await fetch(`http://localhost:5000/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:accessToken}})
+      await fetch(`https://connect-01yh.onrender.com/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token: token}})
       setLike(LikeIcon)
       setCount(count - 1);
     }
@@ -48,19 +45,17 @@ export default function Post({post}) {
   const addComment = async() => {
     const comment = {
       "postid": `${post._id}`,
-      "username": `${users.other.username}`,
+      "username": `${user?.username}`,
       "comment": `${commentwriting}`,
-      "profile":`${users.other?.profile}`
+      "profile":`${user?.profile}`
     }
-    await fetch(`http://localhost:5000/api/post/comment/post` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:accessToken} , body:JSON.stringify(comment)})
+    await fetch(`https://connect-01yh.onrender.com/api/post/comment/post` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token} , body:JSON.stringify(comment)})
     setComments(Comments.concat(comment));
   }
 
   const handleComment = () => {
     addComment();
   }
-
-  console.log(Comments)
 
 const handleshow = ()=>{
   if(show === false){
@@ -69,17 +64,16 @@ const handleshow = ()=>{
     setshow(false)
   }
 }
-console.log(user)
 
   return (
     <div className='container-fluid py-3'>
       <div className='post-outer-container'>
         <div className='full-width'>
           <div className='post-head pb-3'>
-            {user.profile == ""? <img src={`${ProfileImage}`} className="PostImage" alt="" /> : <img src={`${user.profile}`} className="PostImage" alt="" />}
+            {postUser.profile == ""? <img src={`${ProfileImage}`} className="PostImage" alt="" /> : <img src={`${postUser.profile}`} className="PostImage" alt="" />}
             
             <div className='ps-3'>
-              <p className='post-user'>{user.username}</p>
+              <p className='post-user'>{postUser.username}</p>
               {/* <p className=''></p> */}
             </div>
             <img src={`${Moreoption}`} className="moreicons" alt="" />
@@ -110,7 +104,7 @@ console.log(user)
           {show === true ?
           <div style={{padding:'10px'}}>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <img src={`${users.other.profile}`} className="PostImage" alt="" />
+              <img src={`${user.profile}`} className="PostImage" alt="" />
               <input type="text" className='commentinput' placeholder='Write your thought' onChange={(e) => setcommentwriting(e.target.value)} />
               <button className='addCommentbtn' onClick={handleComment}>Post</button>
             </div>

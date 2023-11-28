@@ -5,7 +5,7 @@ export default function Forgotpassword() {
   const [email , setEmail] = useState('');
 const handleclick = async(e)=>{
   e.preventDefault();
-  await fetch(`http://localhost:5000/api/user/forgot/password` , {method:"POST" , headers:{"Content-Type":"application/JSON"} , body:JSON.stringify({email:email})}).then(()=>{
+  await fetch(`https://connect-01yh.onrender.com/api/user/forgot/password` , {method:"POST" , headers:{"Content-Type":"application/JSON"} , body:JSON.stringify({email:email})}).then(()=>{
     alert("We sent you a token email")
   }).catch(()=>{
     alert("Fail to proccess")

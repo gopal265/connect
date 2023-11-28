@@ -7,19 +7,14 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 export default function MainPost() {
-  const userDetails = useSelector((state)=>state.user);
-  let user = userDetails.user;
-  console.log(user);
-  let id = user?.other?._id;
-  const accesstoken = user.accessToken;
-  console.log(accesstoken)
+  const {user,token} = useSelector((state)=>state.user);
   const [post , setPost] = useState([]);
   useEffect(() => {
    const getPost = async()=>{
     try {
-      const res = await axios.get(`http://localhost:5000/api/user/flw/${id}` , {
+      const res = await axios.get(`https://connect-01yh.onrender.com/api/user/flw/${user._id}` , {
         headers:{
-          token:accesstoken
+          token: token
         }
       })
       setPost(res.data);

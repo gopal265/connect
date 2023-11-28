@@ -1,26 +1,22 @@
 import React, { useEffect } from 'react'
 import "./profileleftbar.css";
 import image from "../Images/Profile.png";
-import image2 from "../Images/image2.jpg"
 import { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import Followers from '../Followers/Followers';
 export default function ProfileLeftbar() {
   let location = useLocation();
   let id = location.pathname.split("/")[2];
-  const userDetails = useSelector((state) => state.user);
-  let user = userDetails.user;
-  const [Follow, setUnFollow] = useState([user.other.Following.includes(id) ? "Unfollow" : "Follow"]);
-  const accessToken = user.accessToken;
-  console.log(accessToken)
-  let username = user?.other?.username;
+  const {user,token} = useSelector((state) => state.user);
+  const [Follow, setUnFollow] = useState([user?.Following.includes(id) ? "Unfollow" : "Follow"]);
 
   const [users, setuser] = useState([]);
   useEffect(() => {
     const getuser = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/user/post/user/details/${id}`)
+        const res = await axios.get(`https://connect-01yh.onrender.com/api/user/post/user/details/${id}`)
         setuser(res.data);
       } catch (error) {
         console.log("Some error occured")
@@ -35,26 +31,25 @@ export default function ProfileLeftbar() {
   useEffect(() => {
     const getFollowing = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/post/following/${id}`);
+        const res = await axios.get(`https://connect-01yh.onrender.com/api/post/following/${id}`);
         setFollowinguser(res.data);
       } catch (error) {
         console.log("Error")
       }
     }
     getFollowing();
-  }, [])
+  }, [id])
 
   const handleFollow = async () => {
     if (Follow === "Follow") {
-      await fetch(`http://localhost:5000/api/user/following/${id}`, { method: 'PUT', headers: { 'Content-Type': "application/JSON", token: accessToken }, body: JSON.stringify({ user: `${user.other._id}` }) })
+      await fetch(`https://connect-01yh.onrender.com/api/user/following/${id}`, { method: 'PUT', headers: { 'Content-Type': "application/JSON", token: token }, body: JSON.stringify({ user: `${user._id}` }) })
       setUnFollow("UnFollow")
     } else {
-      await fetch(`http://localhost:5000/api/user/following/${id}`, { method: 'PUT', headers: { 'Content-Type': "application/JSON", token: accessToken }, body: JSON.stringify({ user: `${user.other._id}` }) })
+      await fetch(`https://connect-01yh.onrender.com/api/user/following/${id}`, { method: 'PUT', headers: { 'Content-Type': "application/JSON", token: token }, body: JSON.stringify({ user: `${user._id}` }) })
       setUnFollow("Follow")
     }
   }
 
-  console.log(Followinguser)
 
   return (
     <div className='container-fluid  pt-4 full-width px-0'>
@@ -79,9 +74,9 @@ export default function ProfileLeftbar() {
 
         <div >
           <h6 >User bio</h6>
-          <p >{user.about ? users.about : "Hi ,All lets connect"}</p>
+          <p >{users.about ? users.about : "Hi ,All lets connect"}</p>
         </div>
-        {user.other._id !== id ? <div onClick={handleFollow}><button className='btn btn-success full-width'>{Follow}</button></div> : <div><button  className='btn btn-success full-width'>Edit Bio</button></div>}
+        {user._id !== id ? <div onClick={handleFollow}><button className='btn btn-success full-width'>{ Follow === "Follow" ? "Unfollow" : "Follow"}</button></div> : <div><button  className='btn btn-success full-width'>Edit Bio</button></div>}
 
 
       </div>
@@ -94,7 +89,7 @@ export default function ProfileLeftbar() {
         </div>
         <div style={{ display: 'flex', flexWrap: "wrap", marginLeft: 5 }}>
           {Followinguser.map((item) => (
-            <Link to={`/Profile/${item._id}`}>
+            <Link to={location.pathname.includes("Profile") ? `/Profile/${item._id}` : `/profileinfo/${item._id}`} >
               <div style={{ marginLeft: 4, cursor: "pointer" }} key={item._id}>
                 <img src={`${item.profile}`} className="friendimage" alt="" />
                 <p style={{ marginTop: -2 }}>{item.username}</p>
@@ -105,6 +100,10 @@ export default function ProfileLeftbar() {
 
 
         </div>
+      </div>
+      
+      <div className='d-block d-md-none'>
+            <Followers />
       </div>
 
     </div>

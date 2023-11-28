@@ -1,6 +1,10 @@
 .outer-login-container{
           background-color: #f0f2f5;
-          height: 100vh;
+          height: 100%;
+          min-height: fit-content;
+}
+.inner-login-container{
+    flex : 1
 }
 
 .login-form-container{

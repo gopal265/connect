@@ -3,23 +3,17 @@ import "./contentpost.css";
 import imageIcon from "../Images/gallery.png"
 import emojiIcon from "../Images/cat-face.png"
 import VideoIcon from "../Images/video.png"
-import profileimage from "../Images/Profile.png"
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import app from '../../firebase';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 export default function ContentPost() {
-  const userDetails = useSelector((state) => state.user);
-  let user = userDetails?.user;
-  console.log(user);
-  let id = user?.other?._id;
+  const {user,token} = useSelector((state) => state.user);
   const [file, setFile] = useState(null);
   const [file2, setFile2] = useState(null);
   const [title, setTile] = useState('');
   const [imagePre, setImagePre] = useState(null);
   const [VideoPre, setVideoPre] = useState(null);
-  const accessToken = user.accessToken;
-  console.log(file?.name)
 
   const handlePost = (e) => {
     e.preventDefault();
@@ -51,7 +45,7 @@ export default function ContentPost() {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            fetch(`http://localhost:5000/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: accessToken }, body: JSON.stringify({ title: title, image: downloadURL, video: '' }) }).then((data) => {
+            fetch(`https://connect-01yh.onrender.com/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: token }, body: JSON.stringify({ title: title, image: downloadURL, video: '' }) }).then((data) => {
               alert("Your Post was upload successfully");
               window.location.reload(true)
             })
@@ -86,7 +80,7 @@ export default function ContentPost() {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            fetch(`http://localhost:5000/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: accessToken }, body: JSON.stringify({ title: title, video: downloadURL, image: '' }) }).then((data) => {
+            fetch(`https://connect-01yh.onrender.com/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: token }, body: JSON.stringify({ title: title, video: downloadURL, image: '' }) }).then((data) => {
               alert("Your Post was upload successfully");
               window.location.reload(true)
             })
@@ -94,7 +88,7 @@ export default function ContentPost() {
         }
       );
     } else {
-      fetch(`http://localhost:5000/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: accessToken }, body: JSON.stringify({ title: title, video: '', image: '' }) }).then((data) => {
+      fetch(`https://connect-01yh.onrender.com/api/post/user/post`, { method: "POST", headers: { 'Content-Type': "application/JSON", token: token }, body: JSON.stringify({ title: title, video: '', image: '' }) }).then((data) => {
         alert("Your Post was upload successfully");
         window.location.reload(true)
       })
@@ -107,13 +101,16 @@ export default function ContentPost() {
       <div className='containter-fluid px-2 pe-5 py-2 bg-white posting-outer-container full-width'>
 
         <div className='py-2 post-head full-width'>
-          <img src={`${user?.other?.profile}`} className="profileimage" alt="" />
+
+          <img src={`${user?.profile}`} className="profileimage" alt="" />
           <div className='ps-3 full-width'>
             <input type="text" className='input-content' placeholder='Write your real thought.....' onChange={(e) => setTile(e.target.value)} />
           </div>
+
         </div>
 
         <div style={{ marginLeft: '10px' }}>
+          
           {imagePre !== null ? <img src={imagePre} style={{ width: "410px", height: '250px', objectFit: "cover", borderRadius: '10px' }} alt="" /> : VideoPre !== null ? <video className="PostImages" width="500" height="500" controls >
             <source src={VideoPre} type="video/mp4" />
           </video> : ''

@@ -4,23 +4,27 @@ export const userReducer = createSlice({
           name:"User",
           initialState:{
                     user:null,
-                    isFetching:false,
-                    error:false
+                    loading:false,
+                    status : null,
+                    error: null
           },
           reducers:{
                     loginStart:(state)=>{
-                              state.isFetching = true
+                              state.loading = true
                     },
                     loginSuccess:(state , action)=>{
-                              state.isFetching = false;
-                              state.user = action.payload
+                              state.loading = false;
+                              state.user = action.payload.user;
+                              state.token = action.payload.token;
+                              state.error = null;
                     },
-                    loginFailure:(state)=>{
-                              state.isFetching = false;
-                              state.error = true
+                    loginFailure:(state,action)=>{
+                              state.loading = false;
+                              state.error =  action.payload
                     },
                     logout:(state)=>{
                               state.user = null
+                              state.error = null
                     },
           },
 })

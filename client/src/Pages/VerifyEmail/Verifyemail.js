@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Link , useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { VerifyEmail } from '../../Component/ReduxContainer/apiCall';
-
+import { VerifyEmail } from '../../Component/ReduxContainer/userApi';
 export default function Verifyemail() {
   const dispatch = useDispatch();
   const [OTP , setOTP] = useState('');

@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
 
         const OTP = generateOTP();
         const verificationToken = await VerificationToken.create({
-            user: user._id,
+            user: newUser._id,
             token: OTP
         });
 
@@ -45,11 +45,11 @@ exports.register = async (req, res) => {
 
         await sendEmail().sendMail({
             from: process.env.USER,
-            to: user.email,
+            to: newUser.email,
             subject: "Verify your email using OTP",
             html: `<h1>Your OTP CODE ${OTP}</h1>`
         })
-        res.status(200).json({ Status: "Pending", msg: "Please check your email", user: user._id })
+        res.status(200).json({ Status: "Pending", msg: "Please check your email", user: newUser._id })
 
     } catch (error) {
         return res.status(500).json("Internal error occured")
@@ -104,22 +104,18 @@ exports.verifyMail = async (req, res) => {
 
 exports.login = async (req, res) => {
 
-    //   const error = validationResult(req);
-    //   if(!error.isEmpty()){
-    //             return res.status(400).json("some error occured")
-    //   }
-
+   
     try {
 
         const user = await User.findOne({ email: req.body.email });
 
         if (!user) {
-            return res.status(400).json("User doesn't found")
+            return res.status(400).json({ error : "User doesn't found"})
         }
 
         const correctPassword = await bcrypt.compare(req.body.password, user.password);
         if (!correctPassword) {
-            return res.status(400).json("Password error")
+            return res.status(400).json({error  :"Password error"})
         }
 
         const accessToken = jwt.sign({
@@ -128,10 +124,10 @@ exports.login = async (req, res) => {
         }, JWTSEC);
 
         const { password, ...other } = user._doc
-        res.status(200).json({ other, accessToken });
+        res.status(200).json({ user : other, token : accessToken });
 
     } catch (error) {
-        res.status(500).json("Internal error occured")
+        res.status(500).json({error :"Internal error occured"})
     }
 
 }
@@ -314,10 +310,11 @@ exports.users = async (req, res) => {
                 return item;
             })
         )
+    
         let UserToFollow = allUser.filter((val) => {
-            return !followinguser.find((item) => {
-                return val._id.toString() === item;
-            })
+
+            return    !followinguser.includes(val._id.toString()) && val._id.toString() !== req.params.id;
+            
         })
 
         let filteruser = await Promise.all(
@@ -326,7 +323,6 @@ exports.users = async (req, res) => {
                 return others
             })
         )
-
         res.status(200).json(filteruser)
     } catch (error) {
         return res.status(500).json({message : "Internal Error"})
