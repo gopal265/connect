@@ -1,7 +1,7 @@
 .outer-login-container{
           background-color: #f0f2f5;
           height: 100%;
-          min-height: fit-content;
+          min-height: 100vh;
 }
 .inner-login-container{
     flex : 1

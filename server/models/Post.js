@@ -11,7 +11,6 @@ const PostSchema = new mongoose.Schema({
           },
           image:{
                     type:String,
-                    // required:true
           },
           video:{
                     type:String,
@@ -40,7 +39,11 @@ const PostSchema = new mongoose.Schema({
                                         required:true
                               }
                     }
-          ]
+          ],
+        createAt : {
+            type : Date,
+            default : Date.now
+        }
 })
 
 module.exports = mongoose.model("Post" , PostSchema);

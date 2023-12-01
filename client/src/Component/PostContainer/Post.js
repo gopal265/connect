@@ -15,7 +15,7 @@ export default function Post({post}) {
   useEffect(() => {
     const getuser = async()=>{
       try {
-        const res  = await axios.get(`https://connect-01yh.onrender.com/api/user/post/user/details/${post.user}`)
+        const res  = await axios.get(`http://localhost:5000/api/user/post/user/details/${post.user}`)
         setPostUser(res.data);
       } catch (error) {
         console.log("Some error occured")
@@ -28,15 +28,21 @@ export default function Post({post}) {
   const [Comments, setComments] = useState(post.comments);
   const [commentwriting, setcommentwriting] = useState('');
   const [show, setshow] = useState(false);
-  
+  const [options,setOptions] = useState(false);
+  const [imageError,setImageError] = useState(false);
+
+  const handleImageError = () =>{
+
+    setImageError(true);
+  }
   
   const handleLike = async() => {
     if (Like == LikeIcon) {
-      await fetch(`https://connect-01yh.onrender.com/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token}})
+      await fetch(`http://localhost:5000/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token}})
       setLike(anotherlikeicon);
       setCount(count + 1);
     } else {
-      await fetch(`https://connect-01yh.onrender.com/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token: token}})
+      await fetch(`http://localhost:5000/api/post/${post._id}/like` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token: token}})
       setLike(LikeIcon)
       setCount(count - 1);
     }
@@ -49,7 +55,7 @@ export default function Post({post}) {
       "comment": `${commentwriting}`,
       "profile":`${user?.profile}`
     }
-    await fetch(`https://connect-01yh.onrender.com/api/post/comment/post` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token} , body:JSON.stringify(comment)})
+    await fetch(`http://localhost:5000/api/post/comment/post` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token:token} , body:JSON.stringify(comment)})
     setComments(Comments.concat(comment));
   }
 
@@ -65,18 +71,41 @@ const handleshow = ()=>{
   }
 }
 
+const handleOptions = () =>{
+  setOptions(!options)
+}
+
+const handleDelete =() =>{
+
+ fetch(`http://localhost:5000/api/post/delete/post/${post._id}` , {method:"DELETE" , headers:{'Content-Type':"application/Json" , token:token} })
+ .then((response) =>  window.location.reload(true)
+ )
+ .catch((err) => alert("Unable to delete post"))
+}
   return (
     <div className='container-fluid py-3'>
       <div className='post-outer-container'>
         <div className='full-width'>
           <div className='post-head pb-3'>
-            {postUser.profile == ""? <img src={`${ProfileImage}`} className="PostImage" alt="" /> : <img src={`${postUser.profile}`} className="PostImage" alt="" />}
-            
+          {
+            !imageError  && postUser?.profile? 
+            (
+              <img src={`${postUser?.profile}`} className="profileimage" alt=""  onError={handleImageError}/>
+            ) :
+            (
+              <div className='imagebackup'>{postUser.username ? postUser.username.substring(0,1) : ""}</div>
+            )
+          }
             <div className='ps-3'>
               <p className='post-user'>{postUser.username}</p>
               {/* <p className=''></p> */}
             </div>
-            <img src={`${Moreoption}`} className="moreicons" alt="" />
+            <div className={`${post.user === user._id ? "d-block" :"d-none"} optionscontainer`} >
+            <img src={`${Moreoption}`} className="moreicons me-3" alt=""  onClick={handleOptions}/>
+            <div className={`${options ? "d-block" : "d-none"} deleteIcon`} onClick={handleDelete}>
+              <div className = "deletetext">Delete</div>
+            </div>
+            </div>
           </div>
           <p className='ps-4'>{post.title}</p>
           {post.image !== '' ? 
@@ -95,8 +124,8 @@ const handleshow = ()=>{
                 <p className='pt-3 ps-2'>{Comments.length} Comments</p>
               </div>
               <div className='col-auto center share-option'>
-              <img src={`${Shareicon}`} className="iconsforPost" alt="" />
-              <p className='pt-3 ps-2'>Share</p>
+              {/* <img src={`${Shareicon}`} className="iconsforPost" alt="" /> */}
+              {/* <p className='pt-3 ps-2'>Share</p> */}
             </div>
             </div>
           

@@ -5,12 +5,8 @@ import { VerifyEmail } from '../../Component/ReduxContainer/userApi';
 export default function Verifyemail() {
   const dispatch = useDispatch();
   const [OTP , setOTP] = useState('');
-  const user = useSelector((state)=>state.user);
-  console.log(user)
-  const userDetails = user.user;
-  const id = userDetails?.user;
-  console.log(id);
-  console.log(userDetails)
+  const {user} = useSelector((state)=>state.user);
+  const id = user;
 
   const handleOTP = (e)=>{
     e.preventDefault();

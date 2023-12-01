@@ -15,6 +15,7 @@ export const userReducer = createSlice({
                     loginSuccess:(state , action)=>{
                               state.loading = false;
                               state.user = action.payload.user;
+                              state.status = action.payload.Status;
                               state.token = action.payload.token;
                               state.error = null;
                     },
@@ -23,8 +24,12 @@ export const userReducer = createSlice({
                               state.error =  action.payload
                     },
                     logout:(state)=>{
-                              state.user = null
-                              state.error = null
+                              state.user = null;
+                              state.error = null;
+                              state.token = null;
+                              state.status = null;
+
+
                     },
           },
 })

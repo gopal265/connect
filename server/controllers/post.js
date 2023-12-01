@@ -104,7 +104,7 @@ exports.commentPost = async(req , res)=>{
 exports.deletePost =  async(req , res)=>{
     try {
           const post = await Post.findById(req.params.id);
-          if(post.user === req.user.id){
+          if(post.user.toString() === req.user.id.toString()){
                 const deletepost = await Post.findByIdAndDelete(req.params.id);
                 return res.status(200).json("You post has been deleted")
           }else{

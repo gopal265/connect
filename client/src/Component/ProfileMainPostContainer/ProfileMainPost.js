@@ -13,14 +13,16 @@ export default function ProfileMainPost() {
   useEffect(() => {
     const getPost = async()=>{
       try {
-        const res = await axios.get(`https://connect-01yh.onrender.com/api/post/get/post/${id}`)
-        setPost(res.data);
+        const res = await axios.get(`http://localhost:5000/api/post/get/post/${id}`)
+        const sorted =  res.data.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
+        console.log(res.data,sorted)
+        setPost(sorted);
       } catch (error) {
         console.log("error occured")
       }
     }
     getPost();
-  }, [])
+  }, [id])
   
   return (
     <div className='container-fluid'>

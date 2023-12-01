@@ -39,10 +39,27 @@
 
 .moreicons{
           width: 20px;
-          position: absolute;
-          right: 15px;
 }
 
+.deleteIcon{
+    position: absolute;
+    right: 0px ;
+    top  : 30px;
+    box-shadow: 0px 5px 5px gray;
+    width: 100px;
+    text-align: center;
+}
+.deletetext:hover{
+    background-color: rgb(231, 63, 63);
+}
+.deletetext{
+    padding: 6px 10px;
+}
+.optionscontainer{
+    position: absolute;
+    right: 15px;
+
+}
 .commentinput{
           width: 24pc;
           margin-left: 10px;

@@ -89,12 +89,12 @@ exports.verifyMail = async (req, res) => {
         const { password, ...other } = findUser._doc;
 
         await sendEmail().sendMail({
-            from: "sociaMedia@gmail.com",
+            from: process.env.USER,
             to: findUser.email,
             subject: "Successfully verify your email",
             html: `Now you can login in social app`
         })
-        return res.status(200).json({ other, accessToken })
+        return res.status(200).json({ user: other,token: accessToken })
     } catch (error) {
         return res.status(500).json({ message: "Internal Error" })
     }
@@ -174,22 +174,22 @@ exports.resetPassword = async (req, res) => {
 
         const { token, _id } = req.query;
         if (!token || !_id) {
-            return res.status(400).json("Invalid req");
+            return res.status(400).json({status:"error",message:"Invalid req"});
         }
         const user = await User.findOne({ _id: _id });
 
         if (!user) {
-            return res.status(400).json("user not found")
+            return res.status(400).json({status:"error",message:"user not found"})
         }
 
         const resetToken = await ResetToken.findOne({ user: user._id });
         if (!resetToken) {
-            return res.status(400).json("Reset token is not found")
+            return res.status(400).json({status:"error",message :"Reset token is not found"})
         }
 
         const isMatch =  bcrypt.compareSync(token, resetToken.token);
         if (!isMatch) {
-            return res.status(400).json("Token is not valid");
+            return res.status(400).json({status:"error",message:"Token is not valid"});
         }
 
         const { password } = req.body;
@@ -205,9 +205,9 @@ exports.resetPassword = async (req, res) => {
             html: `Now you can login with new password`
         })
 
-        return res.status(200).json("Email has been send")
+        return res.status(200).json({status:"success",message:"Password Reset successfully0"})
     } catch (error) {
-        return res.status(500).json("Internal Error")
+        return res.status(500).json({status:"error",message:"Internal Error"})
     }
 
 }
@@ -255,24 +255,22 @@ exports.fetchPostofFollowing = async (req, res) => {
 
 
 exports.updateProfile = async (req, res) => {
-    try {
-        if (req.params.id === req.user.id) {
-            if (req.body.password) {
-                const salt = await bcrypt.genSalt(10);
-                const encryptPass = await bcrypt.hash(req.body.password, salt);
-                req.body.password = encryptPass;
+    // try {
+        if (req.params.id.toString() === req.user.id.toString()) {
+           
+                req.body.password = req.user.password;
                 const updateuser = await User.findByIdAndUpdate(req.params.id, {
                     $set: req.body
                 },{new:true});
                 await updateuser.save();
                 res.status(200).json(updateuser);
-            }
+            
         } else {
             return res.status(400).json("Your are not allow to update this user details ")
         }
-    } catch (error) {
-        return res.status(500).json("Internal server error")
-    }
+    // } catch (error) {
+    //     return res.status(500).json("Internal server error")
+    // }
 }
 
 exports.deleteProfile = async (req, res) => {

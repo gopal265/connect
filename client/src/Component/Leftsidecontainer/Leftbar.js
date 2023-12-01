@@ -8,9 +8,9 @@ export default function Leftbar() {
   
 
   return (
-    <div className='full-width'>
+    <div className='full-width pt-3'>
       <div className=''>
-        <Notification />
+        {/* <Notification /> */}
       </div>
 
     <Explore />

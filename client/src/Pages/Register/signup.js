@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { signup } from '../../Component/ReduxContainer/userApi';
@@ -7,14 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 export default function Signup() {
   const dispatch = useDispatch();
-  const {isFetching  , error} = useSelector((state)=>state.user);
-  const user = useSelector((state)=>state.user);
+  const {users,status,error} = useSelector((state)=>state.user);
   const [email , setEmail] = useState('');
   const [phonenumber , setphonenumber] = useState('');
   const [username , setusername] = useState('');
   const [password , setpassword] = useState('');
   const [file , setfile] = useState(null);
-  const userDetails = user.user;
   const navigator = useNavigate();
   const handleClick = (e)=>{
     e.preventDefault();
@@ -25,8 +23,6 @@ export default function Signup() {
     const uploadTask = uploadBytesResumable(StorageRef, file);
     uploadTask.on('state_changed', 
   (snapshot) => {
-    // Observe state change events such as progress, pause, and resume
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
     console.log('Upload is ' + progress + '% done');
     switch (snapshot.state) {
@@ -39,27 +35,35 @@ export default function Signup() {
     }
   }, 
   (error) => {
-    // Handle unsuccessful uploads
+      alert("Image file Upload")
   }, 
   () => {
-    // Handle successful uploads on complete
-    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+   
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       signup(dispatch ,{email , password , username , phonenumber , profile:downloadURL});
       })
     });
 
   }
-console.log(userDetails?.Status)
-  if(userDetails?.Status==='Pending'){
-    navigator("/verify/email");
-  }
+
+  useEffect(()=>{
+    if( status==='Pending'){
+      navigator("/verify/email");
+    }
+  },[status])
+ 
+  
   return (
-    <div className='outer-login-container center'>
+    <div className='outer-login-container center-col'>
+        {
+          error && <div class="alert alert-danger text-center" role="alert">
+            {error}
+        </div>
+        }
     <div className='container-fluid'>
       <div className='row'>
         <div className='col-lg-6 center-col'>
-          <p className='logo-text'>Soc<span className='logo-part'>ial</span></p>
+          <p className='logo-text'>Con<span className='logo-part'>nect</span></p>
           <p className='intro-text'>Connect with your <span className='logo-part'>family and friends </span></p>
         </div>
         <div className='col-lg-6 center'>

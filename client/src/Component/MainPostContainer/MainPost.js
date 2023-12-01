@@ -12,12 +12,14 @@ export default function MainPost() {
   useEffect(() => {
    const getPost = async()=>{
     try {
-      const res = await axios.get(`https://connect-01yh.onrender.com/api/user/flw/${user._id}` , {
+      const res = await axios.get(`http://localhost:5000/api/user/flw/${user._id}` , {
         headers:{
           token: token
         }
       })
-      setPost(res.data);
+      const sorted =  res.data.sort((a, b) => new Date(b.createAt) - new Date(a.createAt));
+      console.log(res.data,sorted)
+      setPost(sorted);
     } catch (error) {
       
     }
@@ -33,7 +35,7 @@ export default function MainPost() {
       <div className='row'>
       {post.map((item)=>(
         <div className='col-12'>
-          <Post post={item}/>
+          <Post post={item} key={item._id}/>
           </div>
       ))}
       </div>

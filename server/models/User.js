@@ -9,6 +9,12 @@ const UserSchema = new mongoose.Schema({
                     type:String,
                     required:true
           },
+          work : {
+            type : String
+          },
+          about : {
+            type : String
+          },
           password:{
                     type:String,
                     required:true

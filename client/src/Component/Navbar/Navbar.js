@@ -11,13 +11,17 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location)
   const [showNav, setShowNav] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  }
 
   const handleRightNav = () => {
-
     setShowNav(!showNav)
   }
+
   const handleLogout = () => {
     dispatch(logout())
   }
@@ -39,25 +43,33 @@ export default function Navbar() {
 
 
                 <div className='center'>
-                  <div className='searchInputContainer'>
+                  {/* <div className='searchInputContainer'>
                     <img src={`${searchIcon}`} className="searchIcon" alt="" />
                     <input type="text" className='search-input' placeholder='search your friends' name="" id="" />
-                  </div>
+                  </div> */}
                 </div>
 
 
                 <div className='IconsContainer'>
-                  <img src={`${Message}`} className="Icons" alt="" />
+                  {/* <img src={`${Message}`} className="Icons" alt="" /> */}
 
                   <Link to={`/Profile/${user?._id}`}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <img src={`${user?.profile}`} className="ProfileImage" alt="" />
+                      {
+                        !imageError ?
+                          (
+                            <img src={`${user?.profile}`} className="profileimage" alt="" onError={handleImageError} />
+                          ) :
+                          (
+                            <div className='imagebackup'>{user.username.substring(0, 1)}</div>
+                          )
+                      }
                       <p style={{ marginLeft: '5px' }}>{user?.username}</p>
                     </div>
                   </Link>
 
                   <div className='center px-4  full-height' onClick={handleLogout}>
-                    <p>Logout</p>
+                    <button className='btn btn-secondary btn-sm'>Logout</button>
                   </div>
                 </div>
 
@@ -76,20 +88,29 @@ export default function Navbar() {
 
 
           <div className='pt-3'>
-            <div className='flex ' onClick={()=>navigate(`/Profile/${user?._id}`)}>
-              <img src={`${user?.profile}`} className="ProfileImage m-0" alt="" />
+            <div className='flex ' onClick={() => navigate(`/Profile/${user?._id}`)}>
+
+              {
+                !imageError ?
+                  (
+                    <img src={`${user?.profile}`} className="profileimage" alt="" onError={handleImageError} />
+                  ) :
+                  (
+                    <div className='imagebackup'>{user.username.substring(0, 1)}</div>
+                  )
+              }
               <p style={{ marginLeft: '5px' }}>{user?.username}</p>
             </div>
             <div className=" nav-options">
               Notifications
             </div>
-            <div className=' nav-options' onClick={()=> navigate("/explore")}>
+            <div className=' nav-options' onClick={() => navigate("/explore")}>
               Explore
             </div>
-            <div className={`nav-options ${location.pathname.includes("Profile") ? "d-block":"d-none"} `} onClick={()=> navigate(`/profileinfo/${user?._id}`)}>
+            <div className={`nav-options ${location.pathname.includes("Profile") ? "d-block" : "d-none"} `} onClick={() => navigate(`/profileinfo/${user?._id}`)}>
               Profile Info
             </div>
-           
+
           </div>
 
         </div>

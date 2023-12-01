@@ -1,22 +1,25 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { signup } from '../../Component/ReduxContainer/userApi';
+import { signup, update } from '../../Component/ReduxContainer/userApi';
 import app from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-export default function Signup() {
+import "./UpdateProfile.css"
+export default function UpdateProfile() {
   const dispatch = useDispatch();
-  const user = useSelector((state)=>state.user);
-  const [email , setEmail] = useState('');
-  const [phonenumber , setphonenumber] = useState('');
-  const [username , setusername] = useState('');
-  const [password , setpassword] = useState('');
+  const {user,token,status} = useSelector((state)=>state.user);
+  const [email , setEmail] = useState(user.email);
+  const [phonenumber , setphonenumber] = useState(user.phonenumber);
+  const [username , setusername] = useState(user.username);
   const [file , setfile] = useState(null);
-  const userDetails = user.user;
-  const navigator = useNavigate();
+  const [work,setwork] = useState(user.work)
+  const [about,setabout] = useState(user.state)
+   const navigate = useNavigate();
+
   const handleClick = (e)=>{
     e.preventDefault();
+    if(file !=null){
     const fileName = new Date().getTime() + file?.name;
     const storage = getStorage(app);
     const StorageRef = ref(storage , fileName);
@@ -38,21 +41,25 @@ export default function Signup() {
     }
   }, 
   (error) => {
-    // Handle unsuccessful uploads
   }, 
   () => {
-    // Handle successful uploads on complete
-    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      signup(dispatch ,{email , password , username , phonenumber , profile:downloadURL});
+
+      fetch(`http://localhost:5000/api/user/update/${user._id}` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token: token}, body:JSON.stringify({email , username , phonenumber , profile:downloadURL,work:work,about:about})})
+      .then(res => navigate("/"))
+      .catch(err => alert("update profile failed"))
       })
     });
 
   }
-console.log(userDetails?.Status)
-  if(userDetails?.Status==='Pending'){
-    navigator("/verify/email");
+  else{
+
+    fetch(`http://localhost:5000/api/user/update/${user._id}` , {method:"PUT" , headers:{'Content-Type':"application/Json" , token: token}, body:JSON.stringify({email , username , phonenumber , profile:user.profile,work:work,about:about})})
+    .then(res => navigate("/"))
+    .catch(err => alert("update profile failed"))
+    }
   }
+
   return (
     <div className='outer-login-container center'>
     <div className='container-fluid'>
@@ -63,16 +70,22 @@ console.log(userDetails?.Status)
         </div>
         <div className='col-lg-6 center'>
           <div className='login-form-container'>
-          <p className='form-head'>Create New Account</p>
-          <input type="file" name="file" id="file" onChange={(e)=>setfile(e.target.files[0])} className='mb-3'/>
-          <input type="text" placeholder='Username' onChange={(e)=>setusername(e.target.value)} className='input-text full-width' />
-          <input type="text" placeholder='Phonenumber' onChange={(e)=>setphonenumber(e.target.value)} className='input-text full-width' />
-          <input type="email" name="" id="" placeholder='email' onChange={(e)=>setEmail(e.target.value)} className='input-text full-width' />
-          <input type="password" placeholder='******' name="" onChange={(e)=>setpassword(e.target.value)} id="" className='input-text full-width' />
-          <button className='btn btn-info login-button full-width' onClick={handleClick}>Signup</button>
-          <Link to={"/"}>
-          <p className='pt-3'>Already have a account</p>
-          </Link>
+          <p className='form-head'>Update Profile</p>
+          <div className='center'>
+          <img src={user.profile} className='updateImage' />
+          </div>
+          <div className='center py-3'>
+            <label htmlFor='file' className='btn btn-success btn-sm' >Upload Image</label>
+          </div>
+          <input type="file" name="file" id="file"  onChange={(e)=>setfile(e.target.files[0])} className='mb-3 d-none'/>
+          <input type="text" placeholder='Username' value={username} onChange={(e)=>setusername(e.target.value)} className='input-text full-width text-white bg-secondary' readOnly/>
+          <input type="text" name="" id="" placeholder='About' value={work} onChange={(e)=>setwork(e.target.value)} className='input-text full-width'/>
+          <input type="text" name="" id="" placeholder='Work' value={about} onChange={(e)=>setabout(e.target.value)} className='input-text full-width'  />
+          <input type="text" placeholder='Phonenumber' value={phonenumber} onChange={(e)=>setphonenumber(e.target.value)} className='input-text full-width' />
+          <input type="email" name="" id="" placeholder='email' value={email} onChange={(e)=>setEmail(e.target.value)} className='input-text full-width ' readOnly />
+
+          <button className='btn btn-info login-button full-width' onClick={handleClick}>Update</button>
+         
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ export default function Rightbar() {
   useEffect(() => {
     const getuser = async()=>{
       try {
-        const res  = await axios.get(`https://connect-01yh.onrender.com/api/user/all/user/${user._id}`)
+        const res  = await axios.get(`http://localhost:5000/api/user/all/user/${user._id}`)
         setUsers(res.data);
       } catch (error) {
         console.log("Some error occured")
@@ -23,14 +23,16 @@ export default function Rightbar() {
       <div className=''>
       </div>
 
-      <div className='rightcontainer2'>
+      <div className='rightcontainer2 py-2'>
         <h3 style={{textAlign:"start" , marginLeft:"10px"}}>Suggested for you</h3>
-        {users.map((item)=>(
-          <Follow userdetails={item}/>
-          ))}
+        {users.length !== 0 ? users.map((item)=>(
+          <div className='py-3'>
+               <Follow userdetails={item}/>
+            </div>
+          )) : 
+          <div className='pt-4 text-center'>No suggestions</div>
         
-
-        
+        }
 
       </div>
 

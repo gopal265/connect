@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const Post = require("../models/Post");
-const User = require("../models/User");
 const { verifyToken } = require("./verifytoken");
 const postControllers = require("../controllers/post.js")
 
